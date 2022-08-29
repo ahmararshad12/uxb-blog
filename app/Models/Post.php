@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
@@ -23,4 +24,15 @@ class Post extends Model
     }
 
     protected $fillable = ['user_id', 'title', 'description', 'published', 'image'];
+
+    /**
+     * Scope a query to only get active user posts.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return void
+     */
+    public function scopeActiveUserPosts($query)
+    {
+        $query->where('user_id', Auth::id());
+    }
 }
