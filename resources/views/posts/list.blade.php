@@ -28,12 +28,17 @@
                             </div>
                             <div class="card-body">
                                 <p class="card-text">{{ $post->description }}</p>
-                                <a href="{{ route('posts.show', ['post' => $post->id]) }}" class="btn btn-sm btn-primary">Read More</a> |
-                                <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-sm btn-primary">Edit</a>
+                                <a href="{{ route('posts.show', ['post' => $post->id]) }}" class="btn btn-sm btn-primary">Read More</a>
+                                @can('update', $post)
+                                | <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-sm btn-primary">Edit</a>
+                                @endcan
                             </div>
                         </div>
                     @endforeach
 
+                        <div class="mt-3 justify-content-center">
+                            {{ $posts->links() }}
+                        </div>
                 </div>
             </div>
         </div>

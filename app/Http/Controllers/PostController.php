@@ -6,11 +6,14 @@ use App\Http\Requests\Post\StorePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
     public function list(){
-        $posts = Post::wherePublished(true)->get();
+        //Todo: Handle HttpMethodNotFound and other exceptions
+
+        $posts = request()->user()->posts()->paginate(2);
         return view('posts.list', compact('posts'));
     }
 
@@ -20,6 +23,7 @@ class PostController extends Controller
 
     public function store(StorePostRequest $request){
         try {
+            $request->merge(['user_id' => Auth::id()]);
             $post = Post::create($request->all());
             return redirect()->route('posts.list')->with('success', 'Post created successfully!');
         }
