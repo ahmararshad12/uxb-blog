@@ -46,7 +46,11 @@
                                                     <p>{{ $post->description }}</p>
                                                 </div>
                                             </div>
-                                            <comments-component post_id="{{ $post->id }}" user="{{ auth()->user() }}" logged_in="{{ auth()->check() }}"></comments-component>
+                                            <comments-component post_id="{{ $post->id }}"
+                                                                user="{{ auth()->user() }}"
+                                                                logged_in="{{ auth()->check() }}"
+                                                                api_token="{{ session()->get('api_token') }}"
+                                            ></comments-component>
                                         </div>
                                     </div>
                                 </div>

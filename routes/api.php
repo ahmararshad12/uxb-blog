@@ -19,5 +19,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('comments/list', [CommentController::class, 'list']);
-Route::post('comments/create', [CommentController::class, 'create']);
+Route::middleware('auth:sanctum')->group(function(){
+    Route::prefix('comments')->name('comments.')
+        ->controller(PostController::class)
+        ->group(function(){
+            Route::get('list', [CommentController::class, 'list'])->name('list');
+            Route::post('create', [CommentController::class, 'create'])->name('create');
+        });
+});
+

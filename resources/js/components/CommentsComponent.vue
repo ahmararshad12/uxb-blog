@@ -46,7 +46,7 @@
 <script>
 export default {
     name: "CommentsComponent",
-    props: ['post_id', 'user', 'logged_in'],
+    props: ['post_id', 'user', 'logged_in', 'api_token'],
     data(){
         return {
             comments: [],
@@ -65,6 +65,7 @@ export default {
                 .get(
                     `/api/comments/list`,
                     {
+                        headers: { Authorization: `Bearer ${this.api_token}` },
                         params: {
                             post_id: this.post_id
                         },
