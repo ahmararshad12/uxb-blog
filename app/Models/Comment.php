@@ -13,7 +13,7 @@ class Comment extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['post_id', 'sender_id', 'comment'];
+    protected $fillable = ['post_id', 'user_id', 'comment'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i'
@@ -21,6 +21,6 @@ class Comment extends Model
 
     public function sender(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'sender_id');
+        return $this->belongsTo(User::class);
     }
 }

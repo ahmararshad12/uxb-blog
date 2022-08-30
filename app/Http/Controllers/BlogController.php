@@ -16,7 +16,6 @@ class BlogController extends Controller
 
     public function list()
     {
-        dd(session()->all());
         $posts = $this->postService->list(pagination: true);
 
         return view('blogs.list', compact('posts'));

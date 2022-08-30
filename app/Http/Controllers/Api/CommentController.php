@@ -9,6 +9,7 @@ use App\Http\Requests\Comment\ListCommentRequest;
 use App\Http\Resources\CommentResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class CommentController extends Controller
 {

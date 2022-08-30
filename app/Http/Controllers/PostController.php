@@ -41,7 +41,7 @@ class PostController extends Controller
     {
         try {
             $request->merge(['user_id' => Auth::id()]);
-            $post = $this->service->create($request->all());
+            $this->service->create($request->all());
             return redirect()->route('posts.list')->with('success', 'Post created successfully!');
         }
         catch (\Exception $exception){

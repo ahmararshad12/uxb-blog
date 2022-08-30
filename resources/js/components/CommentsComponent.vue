@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div v-else>
-                <p>Login to add comment</p>
+                <p><a href="/login">Login</a> to add comment</p>
             </div>
         </div>
     </div>
@@ -51,13 +51,13 @@ export default {
         return {
             comments: [],
             sender: null,
-            sender_id: null,
+            user_id: null,
             new_comment: null,
         }
     },
     methods: {
         resetCommentForm(){
-            this.sender_id = null;
+            this.user_id = null;
             this.new_comment = null;
         },
         getComments(){
@@ -79,9 +79,12 @@ export default {
             axios
                 .post(`/api/comments/create`, {
                     comment: this.new_comment,
-                    sender_id: this.sender.id,
                     post_id: this.post_id
-                })
+                },
+                {
+                    headers: { Authorization: `Bearer ${this.api_token}` },
+                }
+                )
                 .then((res) => {
                     this.comments.push(res.data.data);
                 })
