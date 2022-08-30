@@ -14,15 +14,11 @@ use App\Http\Controllers\PostController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::prefix('blogs')->name('blogs.')
+Route::name('blogs.')
     ->controller(\App\Http\Controllers\BlogController::class)
     ->group(function () {
         Route::get('', 'list')->name('list');

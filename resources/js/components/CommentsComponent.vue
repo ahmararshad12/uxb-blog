@@ -21,18 +21,23 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex flex-start mt-3 w-100">
-                <img class="rounded-circle shadow-1-strong me-3"
-                     src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="40"
-                     height="40" />
-                <div class="form-outline w-100">
-                    <label class="form-label" for="textAreaExample">Comment</label>
-                    <textarea v-model="new_comment" class="form-control" id="textAreaExample" rows="2" style="background: #fff;"></textarea>
+            <div v-if="logged_in">
+                <div class="d-flex flex-start mt-3 w-100">
+                    <img class="rounded-circle shadow-1-strong me-3"
+                         src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="40"
+                         height="40" />
+                    <div class="form-outline w-100">
+                        <label class="form-label" for="textAreaExample">Comment</label>
+                        <textarea v-model="new_comment" class="form-control" id="textAreaExample" rows="2" style="background: #fff;"></textarea>
+                    </div>
+                </div>
+                <div class="float-end mt-2 mb-2 pt-1">
+                    <button type="button" class="btn btn-primary btn-sm mx-2" @click="addNewComment" :disabled="!new_comment">Post comment</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm" @click="resetCommentForm">Cancel</button>
                 </div>
             </div>
-            <div class="float-end mt-2 mb-2 pt-1">
-                <button type="button" class="btn btn-primary btn-sm" @click="addNewComment" :disabled="!new_comment">Post comment</button>
-                <button type="button" class="btn btn-outline-primary btn-sm" @click="resetCommentForm">Cancel</button>
+            <div v-else>
+                <p>Login to add comment</p>
             </div>
         </div>
     </div>
@@ -41,10 +46,11 @@
 <script>
 export default {
     name: "CommentsComponent",
-    props: ['post_id', 'sender'],
+    props: ['post_id', 'user', 'logged_in'],
     data(){
         return {
             comments: [],
+            sender: null,
             sender_id: null,
             new_comment: null,
         }
@@ -90,6 +96,10 @@ export default {
 
     },
     created() {
+        console.log("is_auths: ", this.logged_in);
+        if(this.user){
+            this.sender = JSON.parse(this.user);
+        }
         this.getComments();
     },
     mounted() {

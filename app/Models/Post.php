@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
@@ -23,6 +24,11 @@ class Post extends Model
             $builder->wherePublished(1);
         });
     }
+
+    /**
+     * @var string[]
+     */
+    protected $appends = ['short_description'];
 
     /**
      * @var string[]
@@ -53,5 +59,13 @@ class Post extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getShortDescriptionAttribute(): string
+    {
+        return match (true) {
+            Str::length($this->description) >= 350 => (Str::substr($this->description, 0, 350) . '....'),
+            default => $this->description,
+        };
     }
 }

@@ -18,6 +18,6 @@ class BlogController extends Controller
     {
         $posts = $this->postService->list(pagination: true);
 
-        return view('posts.list', compact('posts'));
+        return view('blogs.list', compact('posts'));
     }
 }
