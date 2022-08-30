@@ -2,16 +2,73 @@
 
 namespace App\Http\Controllers;
 
-use App\BlogApp\Base\Controller;
+//use App\BlogApp\Base\Controller;
+use App\BlogApp\Base\Service;
+use App\BlogApp\Interfaces\ServiceInterface;
 use App\BlogApp\Services\Post\PostService;
+use App\Http\Requests\Post\StorePostRequest;
+use App\Http\Requests\Post\UpdatePostRequest;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    protected string $module = 'posts';
-    public function __construct(){
-        parent::__construct(new PostService(new Post()));
+    /**
+     * @var PostService
+     */
+    protected PostService $service;
+
+    /**
+     * @param PostService $service
+     */
+    public function __construct(PostService $service){
+//        parent::__construct($service);
+        $this->service = $service;
     }
 
+    public function list()
+    {
+        //Todo: Handle HttpMethodNotFound and other exceptions
+        return $this->service->listView(pagination: true, filters: ['user_id' => Auth::id()]);
+    }
+
+    public function create()
+    {
+        return $this->service->createView();
+    }
+
+    public function store(StorePostRequest $request)
+    {
+        try {
+            $request->merge(['user_id' => Auth::id()]);
+            $post = $this->service->create($request->all());
+            return redirect()->route('posts.list')->with('success', 'Post created successfully!');
+        }
+        catch (\Exception $exception){
+            //Store exception into log file for debugging.
+            return redirect()->route('posts.create')->with('error', 'Something went wrong!');
+        }
+    }
+
+    public function show(Post $post){
+        return $this->service->showView($post->id);
+    }
+
+    public function edit(Post $post){
+        return $this->service->editView($post->id);
+    }
+
+    public function update(UpdatePostRequest $request, Post $post){
+        try {
+            if($this->service->update($request->except('_token'), $post->id)){
+                return redirect()->route('posts.list')->with('success', 'Post updated successfully!');
+            }
+            return redirect()->route('posts.edit')->with('error', 'Something went wrong!');
+        }
+        catch (\Exception $exception){
+            //Store exception into log file for debugging.
+            return redirect()->back()->with('error', 'Something went wrong!');
+        }
+    }
 
 }

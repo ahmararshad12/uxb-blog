@@ -2,35 +2,15 @@
 
 namespace App\BlogApp\Services\Post;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
+use App\BlogApp\Base\Service;
+use App\BlogApp\Interfaces\ServiceInterface;
+use App\BlogApp\Traits\HasCrudViews;
+use App\Models\Post;
 
-class PostService
+class PostService extends Service
 {
-    public function __construct(
-        protected Model $model
-    ){
+    use HasCrudViews;
 
-    }
-    public function list(bool $pagination = false, Callable $filters): Collection|LengthAwarePaginator
-    {
-        $query = $this->model::query();
-        $query->where($filters());
-        if($pagination){
-            return $query->paginate(2);
-        }
-        return $query->get();
-    }
-
-    public function create(array $data): Model
-    {
-        return $this->model::query()->create($data);
-    }
-
-    public function update(array $data, int $id): int
-    {
-        return $this->model::query()->find($id)->update($data);
-    }
-
+    protected string $module = 'post';
+    protected string $model = Post::class;
 }

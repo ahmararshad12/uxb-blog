@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,14 +22,20 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::prefix('blogs')->name('blogs.')
+    ->controller(\App\Http\Controllers\BlogController::class)
+    ->group(function () {
+        Route::get('', 'list')->name('list');
+    });
+
+Route::get('posts/show/{post}', [PostController::class, 'show'])->name('posts.show');
 Route::middleware(['auth'])->group(function(){
     Route::prefix('posts')->name('posts.')
-        ->controller(\App\Http\Controllers\PostController::class)
+        ->controller(PostController::class)
         ->group(function () {
             Route::get('', 'list')->name('list');
             Route::get('create', 'create')->name('create');
             Route::post('store', 'store')->name('store');
-            Route::get('show/{post}', 'show')->name('show');
             Route::get('edit/{post}', 'edit')->name('edit')->can('update', 'post');
             Route::post('update/{post}', 'update')->name('update')->can('update', 'post');
         });

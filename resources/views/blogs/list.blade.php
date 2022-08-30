@@ -6,10 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    {{ __('Post') }}
-                    @can('update', $post)
-                    <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-sm btn-success">Edit</a>
-                    @endcan
+                    {{ __('Blogs') }}
                 </div>
 
                 <div class="card-body">
@@ -23,11 +20,21 @@
                             {{ session('error') }}
                         </div>
                     @endif
-                    <post-show-component
-                        post="{{ $post }}"
-                        canUpdate="{{ auth()->user()->can('update', $post) }}"
-                    ></post-show-component>
+                    @foreach($posts as $post)
+                        <div class="card mt-3">
+                            <div class="card-header">
+                                {{ $post->title }}
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{ $post->description }}</p>
+                                <a href="{{ route('posts.show', ['post' => $post->id]) }}" class="btn btn-sm btn-primary">Read More</a>
+                            </div>
+                        </div>
+                    @endforeach
 
+                        <div class="mt-3 justify-content-center">
+                            {{ $posts->links() }}
+                        </div>
                 </div>
             </div>
         </div>

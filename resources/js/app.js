@@ -16,7 +16,9 @@ import { createApp } from 'vue';
 const app = createApp({});
 
 import ExampleComponent from './components/ExampleComponent.vue';
+import PostShowComponent from './components/PostShowComponent.vue';
 app.component('example-component', ExampleComponent);
+app.component('post-show-component', PostShowComponent);
 
 /**
  * The following block of code may be used to automatically register your
