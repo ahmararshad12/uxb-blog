@@ -26,6 +26,7 @@
                     <post-show-component
                         post="{{ $post }}"
                         canUpdate="{{ auth()->user()->can('update', $post) }}"
+                        current_user="{{ auth()->user() }}"
                     ></post-show-component>
 
                 </div>

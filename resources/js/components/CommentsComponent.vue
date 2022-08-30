@@ -1,18 +1,37 @@
 <template>
     <div id="comments">
-        <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
-            <div class="d-flex flex-start w-100">
+        <div class="card-footer py-3 border-0" style="background-color: #eee;">
+            <h3>Comments</h3>
+            <div class="row d-flex justify-content-center mt-3" v-for="(comment, index) in comments" :key="index">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img class="rounded-circle shadow-1-strong me-3"
+                                         src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="40"
+                                         height="40" />
+                                </div>
+                                <div class="col-md-11">
+                                    <a href="#" class="m-0 p-0">{{ comment.sender }}</a>
+                                    <p class="p-0 m-0">{{ comment.comment }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-start mt-3 w-100">
                 <img class="rounded-circle shadow-1-strong me-3"
                      src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="40"
                      height="40" />
                 <div class="form-outline w-100">
-                                        <textarea class="form-control" id="textAreaExample" rows="2"
-                                                  style="background: #fff;"></textarea>
-                    <label class="form-label" for="textAreaExample">Message</label>
+                    <label class="form-label" for="textAreaExample">Comment</label>
+                    <textarea v-model="new_comment" class="form-control" id="textAreaExample" rows="2" style="background: #fff;"></textarea>
                 </div>
             </div>
-            <div class="float-end mt-2 pt-1">
-                <button type="button" class="btn btn-primary btn-sm">Post comment</button>
+            <div class="float-end mt-2 mb-2 pt-1">
+                <button type="button" class="btn btn-primary btn-sm" @click="addNewComment">Post comment</button>
                 <button type="button" class="btn btn-outline-primary btn-sm">Cancel</button>
             </div>
         </div>
@@ -22,10 +41,12 @@
 <script>
 export default {
     name: "CommentsComponent",
-    props: ['post_id'],
+    props: ['post_id', 'sender'],
     data(){
         return {
             comments: [],
+            sender_id: null,
+            new_comment: null,
         }
     },
     methods: {
@@ -40,8 +61,16 @@ export default {
                     }
                 )
                 .then((response) => {
-                    console.log("comments: ", this.comments);
+                    this.comments = response.data.data
                 });
+        },
+        addNewComment(){
+            console.log(this.sender.name);
+            var new_comment = {
+                comment: this.new_comment,
+                sender: this.sender.name
+            }
+            this.comments.push(new_comment)
         }
     },
     watch: {
@@ -51,7 +80,6 @@ export default {
 
     },
     created() {
-        console.log('post_id: ', this.post_id);
         this.getComments();
     },
     mounted() {

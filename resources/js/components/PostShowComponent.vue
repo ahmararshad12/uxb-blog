@@ -21,15 +21,8 @@
                                 <p class="mt-3 mb-4 pb-2">
                                     {{ current_post.description }}
                                 </p>
-
-                                <div class="small d-flex justify-content-start">
-                                    <a href="#!" class="d-flex align-items-center me-3">
-                                        <i class="far fa-comment-dots me-2"></i>
-                                        <p class="mb-0">Comment</p>
-                                    </a>
-                                </div>
                             </div>
-                            <comments-component :post_id="current_post.id"></comments-component>
+                            <comments-component :post_id="current_post.id" :sender="JSON.parse(current_user)"></comments-component>
                         </div>
                     </div>
                 </div>
@@ -44,7 +37,7 @@ import CommentsComponent from "./CommentsComponent.vue";
 export default {
     name: "PostShowComponent",
     components: { CommentsComponent },
-    props: ['post', 'canUpdate'],
+    props: ['post', 'canUpdate', 'current_user'],
     data(){
         return {
             current_post: null
