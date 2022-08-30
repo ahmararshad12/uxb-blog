@@ -10,6 +10,11 @@ class Comment extends Model
 {
     use HasFactory;
 
+    /**
+     * @var string[]
+     */
+    protected $fillable = ['post_id', 'sender_id', 'comment'];
+
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i'
     ];

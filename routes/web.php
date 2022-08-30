@@ -37,7 +37,7 @@ Route::middleware(['auth'])->group(function(){
             Route::get('create', 'create')->name('create');
             Route::post('store', 'store')->name('store');
             Route::get('edit/{post}', 'edit')->name('edit')->can('update', 'post');
-            Route::post('update/{post}', 'update')->name('update')->can('update', 'post');
+            Route::patch('update/{post}', 'update')->name('update')->can('update', 'post');
         });
 });
 

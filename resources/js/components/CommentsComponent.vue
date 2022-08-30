@@ -31,8 +31,8 @@
                 </div>
             </div>
             <div class="float-end mt-2 mb-2 pt-1">
-                <button type="button" class="btn btn-primary btn-sm" @click="addNewComment">Post comment</button>
-                <button type="button" class="btn btn-outline-primary btn-sm">Cancel</button>
+                <button type="button" class="btn btn-primary btn-sm" @click="addNewComment" :disabled="!new_comment">Post comment</button>
+                <button type="button" class="btn btn-outline-primary btn-sm" @click="resetCommentForm">Cancel</button>
             </div>
         </div>
     </div>
@@ -50,6 +50,10 @@ export default {
         }
     },
     methods: {
+        resetCommentForm(){
+            this.sender_id = null;
+            this.new_comment = null;
+        },
         getComments(){
             axios
                 .get(
@@ -65,12 +69,18 @@ export default {
                 });
         },
         addNewComment(){
-            console.log(this.sender.name);
-            var new_comment = {
-                comment: this.new_comment,
-                sender: this.sender.name
-            }
-            this.comments.push(new_comment)
+            axios
+                .post(`/api/comments/create`, {
+                    comment: this.new_comment,
+                    sender_id: this.sender.id,
+                    post_id: this.post_id
+                })
+                .then((res) => {
+                    this.comments.push(res.data.data);
+                })
+                .catch((err) => console.log('error'));
+
+            this.resetCommentForm();
         }
     },
     watch: {

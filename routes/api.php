@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('comments/list', [CommentController::class, 'list']);
+Route::post('comments/create', [CommentController::class, 'create']);
