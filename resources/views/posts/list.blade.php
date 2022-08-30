@@ -19,6 +19,9 @@
                                 <div class="card mt-3">
                                     <div class="card-header">
                                         {{ $post->title }}
+                                        <span class="float-end" style="font-size: 11px;">
+                                            Created {{ $post->created_at->diffForHumans() }}
+                                        </span>
                                     </div>
                                     <div class="card-body">
                                         <p class="card-text">{{ $post->short_description }}</p>
