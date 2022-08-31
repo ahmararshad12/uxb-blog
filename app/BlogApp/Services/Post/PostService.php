@@ -3,7 +3,6 @@
 namespace App\BlogApp\Services\Post;
 
 use App\BlogApp\Base\Service;
-use App\BlogApp\Interfaces\ServiceInterface;
 use App\BlogApp\Traits\HasCrudViews;
 use App\Models\Post;
 
