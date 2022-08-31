@@ -6,7 +6,7 @@ use Illuminate\View\View;
 
 trait HasCrudViews
 {
-    public function listView(bool $pagination = false, array $filters = []): View
+    public function listView(bool $pagination = false, array $filters = [], string $orderByColumn='created_at', $direction='ASC'): View
     {
         ${plural($this->module)} = $this->list(pagination: $pagination, filters: $filters);
         return view(plural($this->module) . '.list', compact(plural($this->module)));

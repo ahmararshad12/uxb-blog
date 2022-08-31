@@ -17,10 +17,14 @@ class InjectUserId
      */
     public function handle(Request $request, Closure $next)
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        $user = $token?->tokenable;
-        if($user){
-            $request->merge(['user_id' => $user->id]);
+        if(auth()->check()){
+            $request->merge(['user_id' => auth()->id()]);
+        } else {
+            $token = PersonalAccessToken::findToken($request->bearerToken());
+            $user = $token?->tokenable;
+            if($user){
+                $request->merge(['user_id' => $user->id]);
+            }
         }
         return $next($request);
     }

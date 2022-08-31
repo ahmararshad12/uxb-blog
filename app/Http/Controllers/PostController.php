@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-//use App\BlogApp\Base\Controller;
-use App\BlogApp\Base\Service;
-use App\BlogApp\Interfaces\ServiceInterface;
 use App\BlogApp\Services\Post\PostService;
 use App\Http\Requests\Post\StorePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
@@ -22,14 +19,12 @@ class PostController extends Controller
      * @param PostService $service
      */
     public function __construct(PostService $service){
-//        parent::__construct($service);
         $this->service = $service;
     }
 
     public function list()
     {
-        //Todo: Handle HttpMethodNotFound and other exceptions
-        return $this->service->listView(pagination: true, filters: ['user_id' => Auth::id()]);
+        return $this->service->orderBy(dir: 'DESC')->listView(pagination: true, filters: ['user_id' => Auth::id()]);
     }
 
     public function create()
@@ -40,7 +35,6 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         try {
-            $request->merge(['user_id' => Auth::id()]);
             $this->service->create($request->all());
             return redirect()->route('posts.list')->with('success', 'Post created successfully!');
         }

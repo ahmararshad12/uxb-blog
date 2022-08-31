@@ -16,8 +16,8 @@ class BlogController extends Controller
 
     public function list()
     {
-        $posts = $this->postService->list(pagination: true);
+        return $this->postService->orderBy(dir: 'DESC')->listView(pagination: true);
 
-        return view('blogs.list', compact('posts'));
+//        return view('blogs.list', compact('posts'));
     }
 }

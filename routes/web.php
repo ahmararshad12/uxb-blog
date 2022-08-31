@@ -31,7 +31,7 @@ Route::middleware(['auth'])->group(function(){
         ->group(function () {
             Route::get('', 'list')->name('list');
             Route::get('create', 'create')->name('create');
-            Route::post('store', 'store')->name('store');
+            Route::post('store', 'store')->name('store')->middleware('injectUserId');
             Route::get('edit/{post}', 'edit')->name('edit')->can('update', 'post');
             Route::patch('update/{post}', 'update')->name('update')->can('update', 'post');
         });

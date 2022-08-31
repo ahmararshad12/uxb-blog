@@ -12,14 +12,16 @@ abstract class Service
 
     public function __construct(
         private array $relations = [],
+        private string $orderByColumn = 'created_at',
+        private string $direction = 'ASC',
     ){
         $this->query = $this->model::query();
     }
 
-    //Todo: Set filters using chain
     public function list(bool $pagination = false, array $filters = []): Collection|LengthAwarePaginator
     {
-        $this->query->with($this->relations)->where($filters);
+        $this->query->with($this->relations)->where($filters)->orderBy($this->orderByColumn, $this->direction);
+
         if($pagination){
             return $this->query->paginate(2);
         }
@@ -44,6 +46,13 @@ abstract class Service
     public function relations(array $relations): self
     {
         $this->relations = $relations;
+        return $this;
+    }
+
+    public function orderBy(string $column = 'created_at', string $dir = 'ASC'): self
+    {
+        $this->orderByColumn = $column;
+        $this->direction = $dir;
         return $this;
     }
 }
